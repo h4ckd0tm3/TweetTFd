@@ -7,10 +7,9 @@ from CTFd.plugins.challenges import CHALLANGE_CLASSES
 
 import tweepy
 
-CONSUMER_KEY = 'YOUR APP KEY'
-CONSUMER_SECRET = 'YOUR APP SECRET'
-ACCESS_TOKEN = 'ACCESS TOKEN'
-ACCESS_TOKEN_SECRET = 'ACCESS TOKEN SECRET'
+#You have to create a credentials.py file with your tokens and secrets in it
+from credentials import *
+
 AUTH = None
 API = None
 
