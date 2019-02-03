@@ -18,7 +18,7 @@ from .credentials import *
 
 class TweetnamicValueChallenge(BaseChallenge):
     id = "tweetnamic"  # Unique identifier used to register challenges
-    name = "tweetamic"  # Name of a challenge type
+    name = "tweetnamic"  # Name of a challenge type
     templates = {  # Handlebars templates used for each aspect of challenge editing & viewing
         'create': '/plugins/TweetTFd/assets/create.html',
         'update': '/plugins/TweetTFd/assets/update.html',
