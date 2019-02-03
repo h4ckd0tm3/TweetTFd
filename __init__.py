@@ -209,7 +209,7 @@ class TweetnamicValueChallenge(BaseChallenge):
             score = user.get_score(admin=True)
             place = user.get_place(admin=True)
             tweet_text = "{} got first blood on {} and now has {:d} points! (place {}) #kdctf #challengesolved #firstblood #cyber".format(user.name, chal.name, score, place)
-            tweetsolve(tweet_text)
+            tweet_solve(tweet_text)
 
     @staticmethod
     def fail(user, team, challenge, request):
@@ -247,14 +247,14 @@ class TweetnamicChallenge(Challenges):
         super(TweetnamicChallenge, self).__init__(**kwargs)
         self.initial = kwargs['value']
 
-def tweetsolve(text):
+def tweet_solve(text):
+    AUTH = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+    AUTH.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+    API = tweepy.API(AUTH)
     API.update_status(status=tweet)
 
 def load(app):
     # upgrade()
     app.db.create_all()
-    AUTH = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-    AUTH.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
-    API = tweepy.API(AUTH)
     CHALLENGE_CLASSES['tweetnamic'] = TweetnamicValueChallenge
     register_plugin_assets_directory(app, base_path='/plugins/TweetTFd/assets/')
