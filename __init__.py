@@ -11,6 +11,9 @@ from CTFd.utils.modes import get_model
 from flask import Blueprint
 import math
 
+import socket
+import sys
+
 import tweepy
 
 #You have to create a credentials.py file with your tokens and secrets in it
@@ -214,6 +217,8 @@ class TweetnamicValueChallenge(BaseChallenge):
                           user.name, chal.name, place, score)
             tweet_solve(tweet_text)
 
+        play_teamsound(user.id)
+
     @staticmethod
     def fail(user, team, challenge, request):
         """
@@ -255,6 +260,17 @@ def tweet_solve(text):
     AUTH.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
     API = tweepy.API(AUTH)
     API.update_status(status=text)
+
+def play_teamsound(id):
+    client_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_sock.connect("10.80.{:d}.100".format(id))
+
+    try:
+        message = b'play'
+        client_sock.sendall(message)
+    finally:
+        print('closing socket')
+        client_sock.close()
 
 def load(app):
     # upgrade()
