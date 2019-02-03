@@ -208,7 +208,10 @@ class TweetnamicValueChallenge(BaseChallenge):
         if solve_count == 0:
             score = user.get_score(admin=True)
             place = user.get_place(admin=True)
-            tweet_text = "{} got first blood on {} and now has {:d} points! (place {}) #kdctf #challengesolved #firstblood #cyber".format(user.name, chal.name, score, place)
+            tweet_text = ("{} got first blood on {} and "
+                          "is now in {} place with {:d} points! "
+                          "#kdctf #challengesolved #firstblood #cyber").format(
+                          user.name, chal.name, place, score)
             tweet_solve(tweet_text)
 
     @staticmethod
