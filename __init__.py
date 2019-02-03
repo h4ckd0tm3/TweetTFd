@@ -173,9 +173,6 @@ class TweetnamicValueChallenge(BaseChallenge):
         data = request.form or request.get_json()
         submission = data['submission'].strip()
 
-        user = Teams.query.filter_by(id=team.id).first_or_404()
-        score = user.score(admin=True)
-
         Model = get_model()
 
         solve_count = Solves.query \
@@ -209,7 +206,9 @@ class TweetnamicValueChallenge(BaseChallenge):
         db.session.commit()
         db.session.close()
 
-        tweet_text = "{} just solved {} and now has {:d} points! #kdctf #challengesolved".format(team.name, chal.name, score)
+        score = team.get_score(admin=True)
+        place = team.get_place(admin=True)
+        tweet_text = "{} just solved {} and now has {:d} points! (currenly place {})  #kdctf #challengesolved".format(team.name, chal.name, score, place)
         tweetsolve(tweet_text)
 
     @staticmethod
