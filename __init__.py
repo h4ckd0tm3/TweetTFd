@@ -16,7 +16,7 @@ import tweepy
 #You have to create a credentials.py file with your tokens and secrets in it
 from .credentials import *
 
-class DynamicValueChallenge(BaseChallenge):
+class TweetnamicChallenge(BaseChallenge):
     id = "tweetnamic"  # Unique identifier used to register challenges
     name = "tweetamic"  # Name of a challenge type
     templates = {  # Handlebars templates used for each aspect of challenge editing & viewing
@@ -72,10 +72,10 @@ class DynamicValueChallenge(BaseChallenge):
             'max_attempts': challenge.max_attempts,
             'type': challenge.type,
             'type_data': {
-                'id': DynamicValueChallenge.id,
-                'name': DynamicValueChallenge.name,
-                'templates': DynamicValueChallenge.templates,
-                'scripts': DynamicValueChallenge.scripts,
+                'id': TweetnamicChallenge.id,
+                'name': TweetnamicChallenge.name,
+                'templates': TweetnamicChallenge.templates,
+                'scripts': TweetnamicChallenge.scripts,
             }
         }
         return data
@@ -231,7 +231,7 @@ class DynamicValueChallenge(BaseChallenge):
             ip=get_ip(request),
             provided=submission
         )
-        
+
         db.session.add(wrong)
         db.session.commit()
         db.session.close()
