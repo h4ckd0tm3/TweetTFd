@@ -251,7 +251,7 @@ def tweet_solve(text):
     AUTH = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
     AUTH.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
     API = tweepy.API(AUTH)
-    API.update_status(status=tweet)
+    API.update_status(status=text)
 
 def load(app):
     # upgrade()
