@@ -218,7 +218,7 @@ class TweetnamicValueChallenge(BaseChallenge):
             tweet_solve(tweet_text)
 
         play_teamsound(user.id)
-
+ 
     @staticmethod
     def fail(user, team, challenge, request):
         """
@@ -263,10 +263,10 @@ def tweet_solve(text):
 
 def play_teamsound(id):
     client_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_sock.connect("10.80.{:d}.100".format(id))
 
     try:
-        message = b'play'
+        client_sock.connect("10.80.{:d}.100".format(id))
+        message = b'kdctf_play'
         client_sock.sendall(message)
     finally:
         print('closing socket')
