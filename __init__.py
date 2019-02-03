@@ -204,12 +204,12 @@ class TweetnamicValueChallenge(BaseChallenge):
         )
         db.session.add(solve)
         db.session.commit()
-        db.session.close()
 
-        score = team.get_score(admin=True)
-        place = team.get_place(admin=True)
-        tweet_text = "{} just solved {} and now has {:d} points! (currenly place {})  #kdctf #challengesolved".format(team.name, chal.name, score, place)
-        tweetsolve(tweet_text)
+        if solve_count == 0:
+            score = user.get_score(admin=True)
+            place = user.get_place(admin=True)
+            tweet_text = "{} got first blood on {} and now has {:d} points! (place {}) #kdctf #challengesolved #firstblood #cyber".format(user.name, chal.name, score, place)
+            tweetsolve(tweet_text)
 
     @staticmethod
     def fail(user, team, challenge, request):
