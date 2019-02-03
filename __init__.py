@@ -16,7 +16,7 @@ import tweepy
 #You have to create a credentials.py file with your tokens and secrets in it
 from .credentials import *
 
-class TweetnamicChallenge(BaseChallenge):
+class TweetnamicValueChallenge(BaseChallenge):
     id = "tweetnamic"  # Unique identifier used to register challenges
     name = "tweetamic"  # Name of a challenge type
     templates = {  # Handlebars templates used for each aspect of challenge editing & viewing
@@ -72,10 +72,10 @@ class TweetnamicChallenge(BaseChallenge):
             'max_attempts': challenge.max_attempts,
             'type': challenge.type,
             'type_data': {
-                'id': TweetnamicChallenge.id,
-                'name': TweetnamicChallenge.name,
-                'templates': TweetnamicChallenge.templates,
-                'scripts': TweetnamicChallenge.scripts,
+                'id': TweetnamicValueChallenge.id,
+                'name': TweetnamicValueChallenge.name,
+                'templates': TweetnamicValueChallenge.templates,
+                'scripts': TweetnamicValueChallenge.scripts,
             }
         }
         return data
@@ -238,7 +238,7 @@ class TweetnamicChallenge(BaseChallenge):
 
 
 class TweetnamicChallenge(Challenges):
-    __mapper_args__ = {'polymorphic_identity': 'dynamic'}
+    __mapper_args__ = {'polymorphic_identity': 'tweetnamic'}
     id = db.Column(None, db.ForeignKey('challenges.id'), primary_key=True)
     initial = db.Column(db.Integer, default=0)
     minimum = db.Column(db.Integer, default=0)
@@ -257,5 +257,5 @@ def load(app):
     AUTH = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
     AUTH.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
     API = tweepy.API(AUTH)
-    CHALLENGE_CLASSES['tweetnamic'] = TweetnamicChallenge
+    CHALLENGE_CLASSES['tweetnamic'] = TweetnamicValueChallenge
     register_plugin_assets_directory(app, base_path='/plugins/TweetTFd/assets/')
