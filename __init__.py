@@ -13,6 +13,7 @@ import math
 
 import socket
 import sys
+import logging
 
 import tweepy
 
@@ -208,17 +209,21 @@ class TweetnamicValueChallenge(BaseChallenge):
         db.session.add(solve)
         db.session.commit()
 
-        if solve_count == 0:
-            score = user.get_score(admin=True)
-            place = user.get_place(admin=True)
-            tweet_text = ("{} got first blood on {} and "
-                          "is now in {} place with {:d} points! "
-                          "#kdctf #challengesolved #firstblood #cyber").format(
-                          user.name, chal.name, place, score)
-            tweet_solve(tweet_text)
+        try:
+            if solve_count == 0:
+                score = user.get_score(admin=True)
+                place = user.get_place(admin=True)
+                tweet_text = ("{} got first blood on {} and "
+                              "is now in {} place with {:d} points! "
+                              "#kdctf #challengesolved #firstblood #cyber").format(
+                              user.name, chal.name, place, score)
+                tweet_solve(tweet_text)
 
-        play_teamsound(user.id)
- 
+            play_teamsound(user.id)
+        except Exception as e:
+            logger = logging.getLogger('tweetdfd')
+            logger.exception("Tweet Announcement or team sound failed")
+
     @staticmethod
     def fail(user, team, challenge, request):
         """
@@ -264,9 +269,9 @@ def tweet_solve(text):
 def play_teamsound(id):
     client_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client_sock.settimeout(2)
-    
+
     try:
-        client_sock.connect("10.80.{:d}.100".format(id))
+        client_sock.connect(("10.80.{:d}.100".format(id), 1338))
         message = b'kdctf_play'
         client_sock.sendall(message)
     finally:
