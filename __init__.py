@@ -263,7 +263,8 @@ def tweet_solve(text):
 
 def play_teamsound(id):
     client_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
+    client_sock.settimeout(2)
+    
     try:
         client_sock.connect("10.80.{:d}.100".format(id))
         message = b'kdctf_play'
