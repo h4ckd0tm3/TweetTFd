@@ -18,6 +18,7 @@ from CTFd.utils.modes import get_model
 from flask import Blueprint
 import math
 import tweepy
+from credentials import *
 
 
 class TweetnamicValueChallenge(BaseChallenge):
