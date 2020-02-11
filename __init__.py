@@ -88,7 +88,7 @@ class TweetnamicValueChallenge(BaseChallenge):
         :return:
         """
         data = request.form or request.get_json()
-        challenge = TweetnamicValueChallenge(**data)
+        challenge = TweetnamicChallenge(**data)
 
         db.session.add(challenge)
         db.session.commit()
