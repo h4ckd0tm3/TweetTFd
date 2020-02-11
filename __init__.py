@@ -217,7 +217,7 @@ class TweetnamicValueChallenge(BaseChallenge):
         TweetnamicValueChallenge.calculate_value(challenge)
 
         try:
-            if solve_count == 0:
+            if ENABLE_TWEET and solve_count == 0:
                 score = user.get_score(admin=True)
                 place = user.get_place(admin=True)
                 tweet_text = ("{} got first blood on {} and "
