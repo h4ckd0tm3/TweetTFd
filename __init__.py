@@ -18,7 +18,9 @@ from CTFd.utils.modes import get_model
 from flask import Blueprint
 import math
 import tweepy
-from .credentials import *
+import sys
+import logging
+from .config import *
 
 
 class TweetnamicValueChallenge(BaseChallenge):
@@ -223,9 +225,14 @@ class TweetnamicValueChallenge(BaseChallenge):
                             "#kdctf #challengesolved #firstblood #cyber").format(
                             user.name, challenge.name, place, score)
                 _tweet_solve(tweet_text)
+            if ENABLE_TEAMSOUND:
+                _play_teamsound(user.id)
         except Exception as e:
-            raise
-            pass
+            try:
+                logger = logging.getLogger('tweetdfd')
+                logger.exception("Tweet Announcement or team sound failed: " + e)
+            except Exception:
+                pass
 
     @staticmethod
     def fail(user, team, challenge, request):
@@ -276,6 +283,18 @@ def _tweet_solve(text):
     AUTH.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
     API = tweepy.API(AUTH)
     API.update_status(status=text)
+
+def _play_teamsound(id):
+    client_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_sock.settimeout(2)
+
+    try:
+        client_sock.connect(("10.80.{:d}.100".format(id), 1338))
+        message = b'kdctf_play'
+        client_sock.sendall(message)
+    finally:
+        print('closing socket')
+        client_sock.close()
 
 def _getSolves(chal):
     Model = get_model()
