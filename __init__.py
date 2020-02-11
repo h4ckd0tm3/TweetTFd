@@ -199,6 +199,8 @@ class TweetnamicValueChallenge(BaseChallenge):
         data = request.form or request.get_json()
         submission = data["submission"].strip()
 
+        solve_count = _getSolves(challenge)
+
         solve = Solves(
             user_id=user.id,
             team_id=team.id if team else None,
@@ -211,14 +213,18 @@ class TweetnamicValueChallenge(BaseChallenge):
 
         TweetnamicValueChallenge.calculate_value(challenge)
 
-        if _getSolves(challenge) == 0:
-            score = user.get_score(admin=True)
-            place = user.get_place(admin=True)
-            tweet_text = ("{} got first blood on {} and "
-                          "is now in {} place with {:d} points! "
-                          "#kdctf #challengesolved #firstblood #cyber").format(
-                          user.name, chal.name, place, score)
-            _tweet_solve(tweet_text)
+        try:
+            if solve_count == 0:
+                score = user.get_score(admin=True)
+                place = user.get_place(admin=True)
+                tweet_text = ("{} got first blood on {} and "
+                            "is now in {} place with {:d} points! "
+                            "#kdctf #challengesolved #firstblood #cyber").format(
+                            user.name, challenge.name, place, score)
+                _tweet_solve(tweet_text)
+        except Exception as e:
+            raise
+            pass
 
     @staticmethod
     def fail(user, team, challenge, request):
