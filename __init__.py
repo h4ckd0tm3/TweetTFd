@@ -20,6 +20,7 @@ import math
 import tweepy
 import sys
 import logging
+import socket
 from .config import *
 
 
@@ -230,8 +231,9 @@ class TweetnamicValueChallenge(BaseChallenge):
         except Exception as e:
             try:
                 logger = logging.getLogger('tweetdfd')
-                logger.exception("Tweet Announcement or team sound failed: " + e)
+                logger.exception("Tweet Announcement or team sound failed")
             except Exception:
+                # everything is lost
                 pass
 
     @staticmethod
