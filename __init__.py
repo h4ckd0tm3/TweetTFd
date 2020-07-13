@@ -1,7 +1,7 @@
 from __future__ import division  # Use floating point for math calculations
 
 import math
-import request as rq
+import requests as rq
 
 from flask import Blueprint
 
@@ -11,6 +11,7 @@ from CTFd.plugins.challenges import CHALLENGE_CLASSES, BaseChallenge
 from CTFd.plugins.migrations import upgrade
 from CTFd.utils.modes import get_model
 
+from .config import *
 
 class TweetnamicChallenge(Challenges):
     __mapper_args__ = {"polymorphic_identity": "dynamic"}
@@ -143,8 +144,10 @@ class TweetnamicValueChallenge(BaseChallenge):
         TweetnamicValueChallenge.calculate_value(challenge)
 
         if _getSolves(challenge) == 0:
-
-
+            score = user.get_score(admin=True)
+            place = user.get_place(admin=True)
+            text = f"{user.name} got first blood on {challenge.name} and is now in {place} place with {score} points!"
+            _push_blood(text)
 
 
 def load(app):
@@ -168,3 +171,14 @@ def _getSolves(chal):
     )
 
     return solve_count
+
+def _push_blood(text):
+    embed = {
+        "title": "First Blood!",
+        "color": 15158332,
+        "description": text
+    }
+
+    data = {"embeds": [embed]}
+
+    rq.post(WEBHOOK_URL, data=data)
