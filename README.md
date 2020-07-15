@@ -1,5 +1,6 @@
-# TweetTFd
+Deprecated in favor of [CTFd Notifier](https://github.com/KaindorfCTF/ctfd-notifier)
 
+# TweetTFd
 This is a plugin for the popular jeopardy CTF platform [CTFd](https://github.com/CTFd/CTFd) it requires the python module tweepy. This is completly based on the [Dynamic Scoring](https://github.com/CTFd/DynamicValueChallenge) plugin!
 
 It creates a new challenge type that tweets whenever a team solves a challenge :)
